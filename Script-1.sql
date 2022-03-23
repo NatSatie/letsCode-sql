@@ -1,32 +1,34 @@
-CREATE TABLE cliente (
-    document int not null,
-    name varchar(255) not null,
-    birth_date date not null,
-    email varchar(255) not null,
-    relatives varchar(255),
-    primary key (document)
-)
+CREATE TABLE "cliente" (
+  "id" int UNIQUE PRIMARY KEY NOT NULL,
+  "document" int UNIQUE NOT NULL,
+  "name" varchar NOT NULL,
+  "birth_date" date NOT NULL,
+  "email" varchar NOT NULL
+);
 
-CREATE TABLE dependente (
-    document int not null,
-    name varchar(255) not null,
-    birth_date date not null,
-    email varchar(255) not null,
-    primary key (document)
-)
+CREATE TABLE "dependente" (
+  "id_dependente" int UNIQUE PRIMARY KEY NOT NULL,
+  "id_associado" int NOT NULL
+);
 
-CREATE TABLE contrato (
-    order_id int not null,
-    client int not null,
-    start_date date not null,
-    value money not null,
-    primary key (order_id),
-    foreign key (client) references cliente(document)
-)
+CREATE TABLE "contrato" (
+  "id" int UNIQUE PRIMARY KEY NOT NULL,
+  "id_segurado" int NOT NULL,
+  "start_date" date NOT NULL,
+  "produto" int NOT NULL
+);
 
-CREATE TABLE produto (
-    product_id int not null,
-    ans_id varchar(255) not null,
-    description varchar(255) not null,
-    primary key (product_id)
-)
+CREATE TABLE "produto" (
+  "id" int UNIQUE PRIMARY KEY NOT NULL,
+  "ans_code" int NOT NULL,
+  "description" varchar NOT NULL,
+  "value" money NOT NULL
+);
+
+ALTER TABLE "dependente" ADD FOREIGN KEY ("id_dependente") REFERENCES "cliente" ("id");
+
+ALTER TABLE "dependente" ADD FOREIGN KEY ("id_associado") REFERENCES "cliente" ("id");
+
+ALTER TABLE "contrato" ADD FOREIGN KEY ("id_segurado") REFERENCES "cliente" ("id");
+
+ALTER TABLE "produto" ADD FOREIGN KEY ("id") REFERENCES "contrato" ("produto");
